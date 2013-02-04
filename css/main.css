@@ -20,6 +20,7 @@
 .question .btn-group {
     width:20%;
     margin-top:0;
+    float:right;
 }
 
 .question {
