@@ -4,6 +4,7 @@
 
 .questionWrapper {
     padding:0 5%;
+    margin:30px 0;
 }
 
 .question p, .question .btn-group {
@@ -12,17 +13,19 @@
     margin-right:5%;
 }
 
+.question p {
+    margin-top:10px;
+}
+
 .question .btn-group {
     width:20%;
     margin-top:0;
 }
 
 .question {
-    margin-bottom:20px;
-}
-
-.questionWrapper .btn {
-
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
 }
 
 .questionWrapper h2 {
