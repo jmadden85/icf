@@ -1,0 +1,43 @@
+.clear {
+    clear:both;
+}
+
+.questionWrapper {
+    padding:0 5%;
+}
+
+.question p, .question .btn-group {
+    float:left;
+    width:65%;
+    margin-right:5%;
+}
+
+.question .btn-group {
+    width:20%;
+    margin-top:0;
+}
+
+.question {
+    margin-bottom:20px;
+}
+
+.questionWrapper .btn {
+
+}
+
+.questionWrapper h2 {
+    margin-bottom:25px;
+}
+
+.questionWrapper .submit {
+    margin-top:20px;
+}
+
+.questionWrapper h3 {
+    margin-top:20px;
+}
+
+.questionWrapper textarea {
+    width:100%;
+}
+
