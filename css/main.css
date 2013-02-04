@@ -24,7 +24,7 @@
 
 .question {
     margin-bottom: 20px;
-    padding-bottom: 20px;
+    padding: 0 5% 20px 5%;
     border-bottom: 1px solid #ccc;
 }
 
