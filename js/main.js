@@ -20,6 +20,12 @@ $(document).ready(function() {
 
     var commentsObject = {};
 
+    if ( localStorage.length ) {
+        var grabObject = localStorage.getItem('answerObject');
+        commentsObject = JSON.parse(grabObject);
+        console.log(commentsObject.oneanswer);
+    }
+
     $('.iterations select').change(function() {
         var that = $(this),
               theForm = $('form');
@@ -37,6 +43,10 @@ $(document).ready(function() {
             default :
                 theForm.removeClass('one')
                             .addClass('two');
+                if ( commentsObject.oneanswer ) {
+                    commentsObject.oneanswer === 'first' ? $($('.question.active .btn-group .btn')[0]).addClass('active') : $($('.question.active .btn-group .btn')[1]).addClass('active');
+                    $('textarea').val(commentsObject.onecomment);
+                }
                 break;
 
 
@@ -66,8 +76,7 @@ $(document).ready(function() {
             commentsObject[thisSectionNum + 'answer'] = selectedAnswer;
             commentsObject[thisSectionNum + 'comment'] = text.val();
 
-            localStorage.setItem[thisSectionNum + 'answer'] = selectedAnswer;
-            localStorage.setItem[thisSectionNum + 'comment'] = text.val();
+            localStorage.setItem('answerObject', JSON.stringify(commentsObject));
 
             text.val('');
             questions.hide(0)
@@ -76,7 +85,6 @@ $(document).ready(function() {
             if ( choice === 'next' ) {
                 thisSection.next().show(0)
                                      .addClass('active');
-                text.val(commentsObject[$('.question.active').attr('data-question') + 'comment']);
                 prev.show(0);
                 questionNum.html(questionsInt + 1);
                 if ( questionsInt + 1 === numQuestions ) {
@@ -88,9 +96,14 @@ $(document).ready(function() {
                 submit.hide(0);
                 thisSection.prev().show(0)
                                          .addClass('active');
-                text.val(commentsObject[$('.question.active').attr('data-question') + 'comment']);
                 next.show(0);
                 questionNum.html(questionsInt - 1);
+            }
+
+            text.val(commentsObject[$('.question.active').attr('data-question') + 'comment']);
+
+            if ( commentsObject[$('.question.active').attr('data-question') + 'answer'] ) {
+                $('.question.active .btn-group [data-answer=' + commentsObject[$('.question.active').attr('data-question') + 'answer'] + ']').addClass('active');
             }
 
         };
