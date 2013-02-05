@@ -49,6 +49,7 @@ $(document).ready(function() {
         var that = $(this),
               thisSection = $('.question.active'),
               thisSectionNum = thisSection.attr('data-question'),
+              selectedAnswer = $('.question.active .active').attr('data-answer'),
               prev = $('.prev'),
               next = $('.next'),
               text = $('textarea'),
@@ -58,40 +59,55 @@ $(document).ready(function() {
               numQuestions = questions.length,
               submit = $('.submit');
 
-        if ( that.hasClass('next') ) {
+        function repeater (whichWay) {
 
-            if ( !validate($('[data-question=' + thisSectionNum + ']')) ) {
-                alert('Please select an answer.');
-                return false;
-            } else if ( questionsInt + 1 === numQuestions ) {
-                that.hide(0);
-                submit.show(0);
-            }
+            var choice = whichWay;
 
-            commentsObject[thisSectionNum] = text.val();
+            commentsObject[thisSectionNum + 'answer'] = selectedAnswer;
+            commentsObject[thisSectionNum + 'comment'] = text.val();
+
+            localStorage.setItem[thisSectionNum + 'answer'] = selectedAnswer;
+            localStorage.setItem[thisSectionNum + 'comment'] = text.val();
+
             text.val('');
             questions.hide(0)
                           .removeClass('active');
-            thisSection.next().show(0)
+
+            if ( choice === 'next' ) {
+                thisSection.next().show(0)
                                      .addClass('active');
-            text.val(commentsObject[$('.question.active').attr('data-question')]);
-            prev.show(0);
-            questionNum.html(questionsInt + 1);
+                text.val(commentsObject[$('.question.active').attr('data-question') + 'comment']);
+                prev.show(0);
+                questionNum.html(questionsInt + 1);
+                if ( questionsInt + 1 === numQuestions ) {
+                    that.hide(0);
+                    submit.show(0);
+                }
+            } else {
+                questionsInt === 2 ? prev.hide(0) : prev;
+                submit.hide(0);
+                thisSection.prev().show(0)
+                                         .addClass('active');
+                text.val(commentsObject[$('.question.active').attr('data-question') + 'comment']);
+                next.show(0);
+                questionNum.html(questionsInt - 1);
+            }
+
+        };
+
+
+        if ( !validate($('[data-question=' + thisSectionNum + ']')) && that.hasClass('next') ) {
+
+            alert('Please select an answer.');
+            return false;
+
+        } else if ( that.hasClass('next') ) {
+
+            repeater('next');
 
         } else {
 
-            questionsInt === 2 ? prev.hide(0) : prev;
-
-            commentsObject[thisSectionNum] = text.val();
-            text.val('');
-            submit.hide(0);
-            questions.hide(0)
-                          .removeClass('active');
-            thisSection.prev().show(0)
-                                     .addClass('active');
-            text.val(commentsObject[$('.question.active').attr('data-question')]);
-            next.show(0);
-            questionNum.html(questionsInt - 1);
+            repeater('prev');
 
         }
 
