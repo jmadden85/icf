@@ -2,19 +2,20 @@
     clear:both;
 }
 
+.iterations {
+    margin:25px 0;
+}
+
 .questionWrapper {
     padding:0 5%;
     margin:30px 0;
 }
 
-.question p, .question .btn-group {
+.question p {
+    margin-top:10px;
     float:left;
     width:65%;
     margin-right:5%;
-}
-
-.question p {
-    margin-top:10px;
 }
 
 .question .btn-group {
@@ -45,3 +46,41 @@
     width:100%;
 }
 
+.one .prevNext {
+    display:none;
+}
+
+.one .questionsProgress {
+    display:none;
+}
+
+.prev {
+    display:none;
+}
+
+
+
+.two .submit {
+    display:none;
+}
+
+.two .question {
+    display:none;
+}
+
+.two .question.active {
+    display:block;
+}
+
+.two .questionWrapper h2 {
+    margin-bottom:35px;
+}
+
+.two .question {
+    padding-bottom:25px;
+    margin-bottom:25px;
+}
+
+.two .questionsProgress {
+    margin:15px 0;
+}

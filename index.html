@@ -24,76 +24,101 @@
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-        <section class="container">
+        <div class="container">
 
-            <section class="questionsProgress">
+            <div class="iterations">
 
-            </section>
+                <h2>Pick something</h2>
 
-            <section class="questionWrapper">
+                <select>
 
-                <h2>Did you like this dood?</h2>
+                    <option value="one">Version 1</option>
+                    <option value="two">Version 2</option>
 
-                <article class="question">
+                </select>
 
-                    <p>Was he pretty cool, or kind of a douchebag?</p>
+            </div>
 
-                    <div class="btn-group" data-toggle="buttons-radio">
-                      <button type="button" class="btn btn-large">Cool</button>
-                      <button type="button" class="btn btn-large">Douchebag</button>
+            <form name="icf" class="one">
+
+                <div class="questionWrapper">
+
+                    <div class="questionsProgress">
+                        <h4>Question <span class="questionNum">1</span> of <span class="questionTotal">4</span></h4>
                     </div>
 
-                    <div class="clear"></div>
+                    <h2>Did you like this dood?</h2>
 
-                </article>
+                    <div class="question active" data-question="one">
 
-                <article class="question">
+                        <p>Was he pretty cool, or kind of a douchebag?</p>
 
-                    <p>If you invited him to your tofu bbq, which of the following might he bring?</p>
+                        <div class="btn-group" data-toggle="buttons-radio">
+                          <button type="button" class="btn btn-large">Cool</button>
+                          <button type="button" class="btn btn-large">Douchebag</button>
+                        </div>
 
-                    <div class="btn-group" data-toggle="buttons-radio">
-                      <button type="button" class="btn btn-large">Steaks</button>
-                      <button type="button" class="btn btn-large">Yoga Mat</button>
+                        <div class="clear"></div>
+
                     </div>
 
-                    <div class="clear"></div>
+                    <div class="question" data-question="two">
 
-                </article>
+                        <p>If you invited him to your tofu bbq, which of the following might he bring?</p>
 
-                <article class="question">
+                        <div class="btn-group" data-toggle="buttons-radio">
+                          <button type="button" class="btn btn-large">Steaks</button>
+                          <button type="button" class="btn btn-large">Yoga Mat</button>
+                        </div>
 
-                    <p>If you decided to go on a kale diet, but needed a bro to help you stay strong do you think he'd be down?</p>
+                        <div class="clear"></div>
 
-                    <div class="btn-group" data-toggle="buttons-radio">
-                      <button type="button" class="btn btn-large">Yes</button>
-                      <button type="button" class="btn btn-large">No</button>
                     </div>
 
-                    <div class="clear"></div>
+                    <div class="question" data-question="three">
 
-                </article>
+                        <p>If you decided to go on a kale diet, but needed a bro to help you stay strong do you think he'd be down?</p>
 
-                <article class="question">
+                        <div class="btn-group" data-toggle="buttons-radio">
+                          <button type="button" class="btn btn-large">Yes</button>
+                          <button type="button" class="btn btn-large">No</button>
+                        </div>
 
-                    <p>Hey man, you cool with this form being totally gender biased?</p>
+                        <div class="clear"></div>
 
-                    <div class="btn-group" data-toggle="buttons-radio">
-                      <button type="button" class="btn btn-large">Yes</button>
-                      <button type="button" class="btn btn-large">No</button>
                     </div>
 
-                    <div class="clear"></div>
+                    <div class="question" data-question="four">
 
-                </article>
+                        <p>Hey man, you cool with this form being totally gender biased?</p>
 
-                <h3>Comments <small>(optional)</small></h3>
-                <textarea rows="5"></textarea>
+                        <div class="btn-group" data-toggle="buttons-radio">
+                          <button type="button" class="btn btn-large">Yes</button>
+                          <button type="button" class="btn btn-large">No</button>
+                        </div>
 
-                <button class="btn btn-large submit">Submit</button>
+                        <div class="clear"></div>
 
-            </section>
+                    </div>
 
-        </section>
+                    <h3>Comments <small>(optional)</small></h3>
+                    <textarea rows="5"></textarea>
+
+                    <div class="prevNext">
+
+                        <button class="btn btn-large prev">Previous</button>
+
+                        <button class="btn btn-large next">Next</button>
+
+                    </div>
+
+                    <button class="btn btn-large submit">Submit</button>
+
+                </section>
+
+            </form>
+
+        </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
