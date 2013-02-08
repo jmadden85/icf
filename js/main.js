@@ -128,4 +128,27 @@ $(document).ready(function() {
 
     });
 
+
+
+
+
+
+    $('header ul li span').click(function() {
+        var that = $(this);
+
+        if ( that.hasClass('active') ) {
+            return false;
+        }
+
+        $('header ul li span').removeClass('active');
+        that.addClass('active');
+
+    });
+
+
+
+
+
+
+
 });
