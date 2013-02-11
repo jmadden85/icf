@@ -1,9 +1,10 @@
-function buttonPressed (buttonType, pressedButton, pressedButtonNum) {
+function buttonPressed (buttonType, pressedButton, pressedButtonNum, direction) {
 
   var that = $(pressedButton),
         headerButtons = $('header ul li span'),
         answerButtons = $('.btn-group button'),
         nextNum = parseInt(pressedButtonNum) + 1,
+        prevNum = parseInt(pressedButtonNum) - 1,
         swipeArea = $('.touchMe'),
         questionSlides = $('.slide');
 
@@ -28,11 +29,24 @@ function buttonPressed (buttonType, pressedButton, pressedButtonNum) {
         correspondingNav.addClass('btn-danger');
         break;
 
+      case 'prev' :
+
+        if ( pressedButtonNum === 1 ) {
+          return false;
+        }
+
+        correspondingQuestion = $('[data-slide="' + prevNum + '"]'),
+        correspondingNav = $('[data-boxNum="' + prevNum + '"]');
+
+        break;
+
       default :
         break;
     }
 
-    if ( type === 'answeryes' || type === 'answerno' ) {
+    if ( elNumber === '14' && type === 'answeryes' || elNumber === '14' && type === 'answerno' || type === 'next' && elNumber === '14' ) {
+      return false;
+    } else if ( type === 'answeryes' || type === 'answerno' || type === 'next' ) {
       correspondingQuestion = $('[data-slide="' + nextNum + '"]'),
       correspondingNav = $('[data-boxNum="' + nextNum + '"]');
     }
@@ -49,30 +63,29 @@ function buttonPressed (buttonType, pressedButton, pressedButtonNum) {
     switch ( buttonType ) {
 
       case 'nav' :
-        var clicked = that.attr('data-boxNum'),
-              alreadySelected = that.hasClass('active');
+        var alreadySelected = that.hasClass('active');
 
         if ( alreadySelected ) {
           return false;
         }
-        showHide('nav', clicked);
+        showHide('nav');
 
         break;
+
+      case 'swipe' :
+        direction === 'left' ? showHide('next') : showHide('prev');
+
+      break;
 
       default :
 
         var clicked = that.attr('data-answer'),
               answeredQuestion = that.attr('data-answerFor'),
-              isLast = answeredQuestion === '14',
-              nextQuestion = parseInt(answeredQuestion) + 1;
-
-        if ( isLast ) {
-          return false;
-        }
+              isLast = answeredQuestion === '14';
 
         that.parent().children().removeClass('active');
         that.addClass('active');
-        showHide('answer' + clicked, nextQuestion);
+        showHide('answer' + clicked, answeredQuestion);
 
         break;
 
@@ -178,41 +191,45 @@ $(document).ready(function() {
             // options...
           })
   .bind("swipe", function(ev) {
-    var shownQuestion = parseInt($('.shown').attr('data-slide')),
-    nextNum = shownQuestion + 1,
-    prevNum = shownQuestion - 1,
-    next = $('[data-slide=' + nextNum + ']'),
-    nextSpan = $('header ul li span[data-boxNum=' + nextNum + ']'),
-    prev = $('[data-slide=' + prevNum  + ']'),
-    prevSpan = $('header ul li span[data-boxNum=' + prevNum + ']'),
-    questions= $('.slide'),
-    spans = $('header ul li span');
+    var that = $('.shown'),
+          shownQuestion = parseInt(that.attr('data-slide'));
+          // nextNum = shownQuestion + 1,
+          // prevNum = shownQuestion - 1,
+          // next = $('[data-slide=' + nextNum + ']'),
+          // nextSpan = $('header ul li span[data-boxNum=' + nextNum + ']'),
+          // prev = $('[data-slide=' + prevNum  + ']'),
+          // prevSpan = $('header ul li span[data-boxNum=' + prevNum + ']'),
+          // questions= $('.slide'),
+          // spans = $('header ul li span');
 
     ev.preventDefault();
-
-    if ( shownQuestion === 1 && ev.direction === 'right' ) {
-      return false;
-    } else if ( shownQuestion === 14 && ev.direction === 'left' ) {
-      return false;
+    if ( ev.direction === 'left' || ev.direction === 'right' ) {
+      buttonPressed('swipe', that, shownQuestion, ev.direction);
     }
 
-    if ( ev.direction === 'left' ) {
-      questions.addClass('hidden')
-      .removeClass('shown');
-      spans.removeClass('active');
-      next.removeClass('hidden')
-      .addClass('shown');
-      nextSpan.addClass('active');
-    } else if ( ev.direction === 'right' ) {
-      questions.addClass('hidden')
-      .removeClass('shown');
-      spans.removeClass('active');
-      prev.removeClass('hidden')
-      .addClass('shown');
-      prevSpan.addClass('active');
-    } else {
-      return false;
-    }
+    // if ( shownQuestion === 1 && ev.direction === 'right' ) {
+    //   return false;
+    // } else if ( shownQuestion === 14 && ev.direction === 'left' ) {
+    //   return false;
+    // }
+
+    // if ( ev.direction === 'left' ) {
+    //   questions.addClass('hidden')
+    //   .removeClass('shown');
+    //   spans.removeClass('active');
+    //   next.removeClass('hidden')
+    //   .addClass('shown');
+    //   nextSpan.addClass('active');
+    // } else if ( ev.direction === 'right' ) {
+    //   questions.addClass('hidden')
+    //   .removeClass('shown');
+    //   spans.removeClass('active');
+    //   prev.removeClass('hidden')
+    //   .addClass('shown');
+    //   prevSpan.addClass('active');
+    // } else {
+    //   return false;
+    // }
 
   });
 
