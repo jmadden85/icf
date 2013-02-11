@@ -1,4 +1,96 @@
+function buttonPressed (buttonType, pressedButton, pressedButtonNum) {
+
+  var that = $(pressedButton),
+        headerButtons = $('header ul li span'),
+        answerButtons = $('.btn-group button'),
+        nextNum = parseInt(pressedButtonNum) + 1,
+        swipeArea = $('.touchMe'),
+        questionSlides = $('.slide');
+
+
+  showHide = function (type, elNumber) {
+
+
+    var correspondingQuestion = $('[data-slide="' + pressedButtonNum + '"]'),
+          correspondingNav = $('[data-boxNum="' + pressedButtonNum + '"]');
+
+    switch ( type ) {
+
+      case 'answeryes' :
+
+        correspondingNav.removeClass('btn-danger');
+        correspondingNav.addClass('btn-success');
+        break;
+
+      case 'answerno' :
+
+        correspondingNav.removeClass('btn-success');
+        correspondingNav.addClass('btn-danger');
+        break;
+
+      default :
+        break;
+    }
+
+    if ( type === 'answeryes' || type === 'answerno' ) {
+      correspondingQuestion = $('[data-slide="' + nextNum + '"]'),
+      correspondingNav = $('[data-boxNum="' + nextNum + '"]');
+    }
+
+
+    headerButtons.removeClass('active');
+    questionSlides.addClass('hidden').removeClass('shown');
+    correspondingQuestion.addClass('shown').removeClass('hidden');
+    correspondingNav.addClass('active');
+
+  };
+
+
+    switch ( buttonType ) {
+
+      case 'nav' :
+        var clicked = that.attr('data-boxNum'),
+              alreadySelected = that.hasClass('active');
+
+        if ( alreadySelected ) {
+          return false;
+        }
+        showHide('nav', clicked);
+
+        break;
+
+      default :
+
+        var clicked = that.attr('data-answer'),
+              answeredQuestion = that.attr('data-answerFor'),
+              isLast = answeredQuestion === '14',
+              nextQuestion = parseInt(answeredQuestion) + 1;
+
+        if ( isLast ) {
+          return false;
+        }
+
+        that.parent().children().removeClass('active');
+        that.addClass('active');
+        showHide('answer' + clicked, nextQuestion);
+
+        break;
+
+    }
+
+};
+
+
+
+
 $(document).ready(function() {
+
+
+  // $(document).bind(
+  //   'touchmove',
+  // function(e) {
+  //   e.preventDefault();
+  // });
 
 
   $('header ul li span')
@@ -6,33 +98,36 @@ $(document).ready(function() {
             // options...
           })
   .bind("tap", function(ev) {
-    console.log(ev);
+    // console.log(ev);
     var that = $(this),
-    clickedNum = that.attr('data-boxNum'),
-    spans = $('header ul li span'),
-    questions= $('.slide'),
-    thatQuestion = $('.slide[data-slide=' + clickedNum + ']');
+          thatNum = that.attr('data-boxNum');
+    // clickedNum = that.attr('data-boxNum'),
+    // spans = $('header ul li span'),
+    // questions= $('.slide'),
+    // thatQuestion = $('.slide[data-slide=' + clickedNum + ']');
 
     ev.preventDefault();
+    buttonPressed('nav', that, thatNum);
 
 
-    if ( that.hasClass('active') ) {
-      return false;
-    }
+    // if ( that.hasClass('active') ) {
+    //   return false;
+    // }
 
-    spans.removeClass('active');
-    questions.addClass('hidden')
-    .removeClass('shown');
-    thatQuestion.removeClass('hidden')
-    .addClass('shown');
-    that.addClass('active');
+    // spans.removeClass('active');
+    // questions.addClass('hidden')
+    // .removeClass('shown');
+    // thatQuestion.removeClass('hidden')
+    // .addClass('shown');
+    // that.addClass('active');
   });
 
   $('.btn-group button').click(function(ev) {
-    console.log(ev);
     ev.preventDefault();
     return false;
   });
+
+
 
   $('.btn-group button')
   .hammer({
@@ -40,33 +135,40 @@ $(document).ready(function() {
           })
   .bind("tap", function(ev) {
     var that = $(this),
-    thisQuestionNum = that.parent().parent().parent().attr('data-slide');
-    nextQuestionNum = parseInt(thisQuestionNum) + 1,
-    saidYes = that.html() === '<i class="icon-ok"></i>' ? true : false;
-    questions= $('.slide'),
-    spans = $('header ul li span'),
-    thisSpan = $('header ul li span[data-boxNum=' + thisQuestionNum + ']'),
-    nextQuestion = $('.slide[data-slide=' + nextQuestionNum + ']'),
-    nextSpan = $('header ul li span[data-boxNum=' + nextQuestionNum + ']');
-
+          thatNum = that.attr('data-answerFor');
+    // thisQuestionNum = that.parent().parent().parent().attr('data-slide');
+    // nextQuestionNum = parseInt(thisQuestionNum) + 1,
+    // saidYes = that.html() === '<i class="icon-ok"></i>' ? true : false;
+    // questions= $('.slide'),
+    // spans = $('header ul li span'),
+    // thisSpan = $('header ul li span[data-boxNum=' + thisQuestionNum + ']'),
+    // nextQuestion = $('.slide[data-slide=' + nextQuestionNum + ']'),
+    // nextSpan = $('header ul li span[data-boxNum=' + nextQuestionNum + ']');
     ev.preventDefault();
+    buttonPressed('answer', that, thatNum);
 
-    that.addClass('active');
-    questions.addClass('hidden')
-    .removeClass('shown');
-    spans.removeClass('active');
-    nextQuestion.removeClass('hidden')
-    .addClass('shown');
-    nextSpan.addClass('active');
+    // that.parent().children().removeClass('active');
+    // that.addClass('active');
+
+    // if ( saidYes ) {
+    //   thisSpan.removeClass('btn-danger')
+    //   .addClass('btn-success');
+    // } else {
+    //   thisSpan.addClass('btn-danger')
+    //   .removeClass('btn-success');
+    // }
 
 
-    if ( saidYes ) {
-      thisSpan.removeClass('btn-danger')
-      .addClass('btn-success');
-    } else {
-      thisSpan.addClass('btn-danger')
-      .removeClass('btn-success');
-    }
+    // if ( thisQuestionNum === '14') {
+    //   return false;
+    // }
+
+    // questions.addClass('hidden')
+    // .removeClass('shown');
+    // spans.removeClass('active');
+    // nextQuestion.removeClass('hidden')
+    // .addClass('shown');
+    // nextSpan.addClass('active');
 
 
   });
@@ -113,35 +215,6 @@ $(document).ready(function() {
     }
 
   });
-
-    // $('.btn-group button').click(function() {
-    //     var that = $(this),
-    //          thisQuestionNum = that.parent().parent().parent().attr('data-slide');
-    //           nextQuestionNum = parseInt(thisQuestionNum) + 1,
-    //           saidYes = that.html() === '<i class="icon-ok"></i>' ? true : false;
-    //           questions= $('.slide'),
-    //           spans = $('header ul li span'),
-    //           thisSpan = $('header ul li span[data-boxNum=' + thisQuestionNum + ']'),
-    //           nextQuestion = $('.slide[data-slide=' + nextQuestionNum + ']'),
-    //           nextSpan = $('header ul li span[data-boxNum=' + nextQuestionNum + ']');
-
-    //           questions.addClass('hidden');
-    //           spans.removeClass('active');
-    //           nextQuestion.removeClass('hidden');
-    //           nextSpan.addClass('active');
-
-    //           console.log(thisSpan);
-
-    //           if ( saidYes ) {
-    //             thisSpan.removeClass('btn-danger')
-    //                             .addClass('btn-success');
-    //           } else {
-    //             thisSpan.addClass('btn-danger')
-    //                             .removeClass('btn-success');
-    //           }
-
-
-    // });
 
 
 });

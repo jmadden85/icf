@@ -1,15 +1,13 @@
-html, body {
+body {
     width: 100%;
-    min-width:323px;
+    /*min-width:480px;*/
     height: 100%;
     margin: 0px;
     padding: 0px;
-    overflow-x: hidden;
 }
 
 header {
     width:100%;
-    min-width:100%;
     padding:0;
     margin:0;
 }
@@ -18,7 +16,6 @@ header ul {
     margin:0;
     padding:0;
     width:100%;
-    min-width:100%;
 }
 
 header ul li {
@@ -79,14 +76,32 @@ header ul li .active {
     padding:85px 10% 0;
 }
 
+.fixHeight {
+    height:150px;
+}
+
 .question h3 {
-    line-height:1.3;
-    margin-bottom:20px;
+    line-height:1.2;
+    font-size:18px;
 }
 
 .question p {
-    font-size:16px;
+    font-size:14px;
 }
 
 .question .btn-group {
-    margin-top:15px;}
+    margin-top:15px;
+}
+
+
+@media all and (min-width: 480px) {
+
+  body {
+    min-width:480px;
+  }
+
+  header ul li {
+    width:7.14%;
+  }
+
+}
