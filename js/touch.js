@@ -53,7 +53,9 @@ function ICFForm () {
 
       if ( answers['questionsAnswered'] === 14 ) {
         submit.removeClass('hidden');
-      } else if ( elNumber === '14' && type === 'answeryes' || elNumber === '14' && type === 'answerno' || type === 'next' && elNumber === '14' ) {
+      }
+
+      if ( elNumber === '14' && type === 'answeryes' || elNumber === '14' && type === 'answerno' || type === 'next' && elNumber === '14' ) {
         return false;
       } else if ( type === 'answeryes' || type === 'answerno' || type === 'next' ) {
         correspondingQuestion = $('[data-slide="' + nextNum + '"]'),
