@@ -39,11 +39,14 @@ function ICFForm () {
         case 'prev' :
 
           if ( pressedButtonNum === 1 ) {
-            return false;
+            correspondingQuestion = $('[data-slide=14]');
+            correspondingNav = $('[data-boxNum=14]');
+          } else {
+            correspondingQuestion = $('[data-slide="' + prevNum + '"]'),
+            correspondingNav = $('[data-boxNum="' + prevNum + '"]');
           }
 
-          correspondingQuestion = $('[data-slide="' + prevNum + '"]'),
-          correspondingNav = $('[data-boxNum="' + prevNum + '"]');
+
 
           break;
 
@@ -55,8 +58,11 @@ function ICFForm () {
         submit.removeClass('hidden');
       }
 
-      if ( elNumber === '14' && type === 'answeryes' || elNumber === '14' && type === 'answerno' || type === 'next' && pressedButtonNum === 14 ) {
+      if ( elNumber === '14' && type === 'answeryes' || elNumber === '14' && type === 'answerno' ) {
         return false;
+      } else if ( type === 'next' && pressedButtonNum === 14 ) {
+        correspondingQuestion = $('[data-slide=1]');
+        correspondingNav = $('[data-boxNum=1]');
       } else if ( type === 'answeryes' || type === 'answerno' || type === 'next' ) {
         correspondingQuestion = $('[data-slide="' + nextNum + '"]'),
         correspondingNav = $('[data-boxNum="' + nextNum + '"]');
@@ -142,6 +148,7 @@ $(document).ready(function() {
         $('.searching').addClass('hidden');
         $('.enterInfo').addClass('hidden');
         $('header').removeClass('hidden');
+        $($('.instructions').add($('.instructions .first')).removeClass('hidden'));
         $('.slide[data-slide=1]').removeClass('hidden')
                                         .addClass('shown');
       }, 3000);
@@ -157,9 +164,21 @@ $(document).ready(function() {
           })
   .bind("tap", function(ev) {
     var that = $(this),
-          thatNum = that.attr('data-boxNum');
+          thatNum = that.attr('data-boxNum'),
+          instructions = $('.instructions'),
+          instructionsTwo = $('.instructions .second'),
+          instructionsTwoHidden = instructionsTwo.hasClass('hidden'),
+          instructionsHidden = instructions.hasClass('hidden');
 
     ev.preventDefault();
+
+    if ( !instructionsTwoHidden && !instructionsHidden ) {
+      instructionsTwo.addClass('hidden');
+      instructions.addClass('hidden');
+      instructionsCycled = true;
+    }
+
+
     thisForm.actionTaken('nav', that, thatNum);
   });
 
@@ -194,10 +213,27 @@ $(document).ready(function() {
           })
   .bind("swipe", function(ev) {
     var that = $('.shown'),
-          shownQuestion = parseInt(that.attr('data-slide'));
+          shownQuestion = parseInt(that.attr('data-slide')),
+          instructionsCycled = false,
+          instructions = $('.instructions'),
+          instructionsOne = $('.instructions .first'),
+          instructionsOneHidden = instructionsOne.hasClass('hidden');
+          instructionsTwo = $('.instructions .second'),
+          instructionsTwoHidden = instructionsTwo.hasClass('hidden'),
+          instructionsHidden = instructions.hasClass('hidden');
 
     ev.preventDefault();
     if ( ev.direction === 'left' || ev.direction === 'right' ) {
+
+      if ( !instructionsHidden && !instructionsOneHidden && !instructionsCycled ) {
+        instructionsOne.addClass('hidden');
+        instructionsTwo.removeClass('hidden');
+      } else if ( !instructionsTwoHidden && !instructionsHidden && !instructionsCycled ) {
+        instructionsTwo.addClass('hidden');
+        instructions.addClass('hidden');
+        instructionsCycled = true;
+      }
+
       thisForm.actionTaken('swipe', that, shownQuestion, ev.direction);
     }
 
