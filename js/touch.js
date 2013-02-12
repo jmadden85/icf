@@ -207,7 +207,7 @@ $(document).ready(function() {
     $('.finished').removeClass('hidden');
   });
 
-  $('.touchMe')
+  $('body')
   .hammer({
             // options...
           })
