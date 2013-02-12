@@ -55,7 +55,7 @@ function ICFForm () {
         submit.removeClass('hidden');
       }
 
-      if ( elNumber === '14' && type === 'answeryes' || elNumber === '14' && type === 'answerno' || type === 'next' && elNumber === '14' ) {
+      if ( elNumber === '14' && type === 'answeryes' || elNumber === '14' && type === 'answerno' || type === 'next' && pressedButtonNum === 14 ) {
         return false;
       } else if ( type === 'answeryes' || type === 'answerno' || type === 'next' ) {
         correspondingQuestion = $('[data-slide="' + nextNum + '"]'),
@@ -97,6 +97,7 @@ function ICFForm () {
           if ( answers['slide' + answeredQuestion] === undefined ) {
             answers['questionsAnswered'] += 1;
           }
+
           answers['slide' + answeredQuestion] = that.attr('data-answer');
           localStorage.setItem('answerObject', JSON.stringify(answers));
 
