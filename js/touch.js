@@ -3,7 +3,11 @@ function ICFForm () {
   var answers = {
     questionsAnswered : 0
   },
-      submit = $('.donezo');
+  submit = $('.donezo');
+
+  this.clearAnswers = function() {
+    answers.questionsAnswered = 0;
+  };
 
   this.actionTaken = function (buttonType, pressedButton, pressedButtonNum, direction) {
 
@@ -207,6 +211,15 @@ $(document).ready(function() {
     $('.slide').add($('header')).add($(this)).addClass('hidden').removeClass('shown');
     $('.donezo').addClass('hidden');
     $('.finished').removeClass('hidden');
+    setTimeout(function(){
+      $('.finished').addClass('hidden');
+      $('header ul li span').removeClass('btn-danger').removeClass('btn-success').removeClass('active');
+      $('[data-boxNum=1]').addClass('active');
+      $('.btn-group button').removeClass('active');
+      thisForm.clearAnswers();
+      $('.enterInfo').removeClass('hidden');
+      $('.enterInfo .logIn').removeClass('hidden');
+    }, 5000);
   });
 
   $('body')
