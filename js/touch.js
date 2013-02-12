@@ -55,6 +55,7 @@ function ICFForm () {
       }
 
       if ( answers['questionsAnswered'] === 14 ) {
+        $('.instructions').addClass('hidden');
         submit.removeClass('hidden');
       }
 
@@ -203,7 +204,8 @@ $(document).ready(function() {
   });
 
   $('.donezo').click(function() {
-    $('.slide').add($('header')).add($(this)).addClass('hidden');
+    $('.slide').add($('header')).add($(this)).addClass('hidden').removeClass('shown');
+    $('.donezo').addClass('hidden');
     $('.finished').removeClass('hidden');
   });
 
@@ -222,16 +224,16 @@ $(document).ready(function() {
           instructionsTwoHidden = instructionsTwo.hasClass('hidden'),
           instructionsHidden = instructions.hasClass('hidden');
 
+    if ( !shownQuestion ) {
+      return false;
+    }
+
     ev.preventDefault();
     if ( ev.direction === 'left' || ev.direction === 'right' ) {
 
       if ( !instructionsHidden && !instructionsOneHidden && !instructionsCycled ) {
         instructionsOne.addClass('hidden');
         instructionsTwo.removeClass('hidden');
-      } else if ( !instructionsTwoHidden && !instructionsHidden && !instructionsCycled ) {
-        instructionsTwo.addClass('hidden');
-        instructions.addClass('hidden');
-        instructionsCycled = true;
       }
 
       thisForm.actionTaken('swipe', that, shownQuestion, ev.direction);
