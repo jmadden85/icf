@@ -6,7 +6,9 @@ function ICFForm () {
   submit = $('.donezo');
 
   this.clearAnswers = function() {
-    answers.questionsAnswered = 0;
+    answers = {
+      questionsAnswered : 0
+    }
   };
 
   this.actionTaken = function (buttonType, pressedButton, pressedButtonNum, direction) {
