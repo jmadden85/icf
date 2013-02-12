@@ -22,7 +22,7 @@
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-        <header>
+        <header class="hidden">
 
             <ul>
 
@@ -115,7 +115,24 @@
 
         <section class="container touchMe">
 
-            <section class="slide shown" data-slide="1">
+            <section class="enterInfo">
+
+                <section class="logIn">
+                    <h3>ICF Survey</h3>
+
+                    <label for="whoAreYou">Email</label>
+                    <input id="whoAreYou" class="span12" type="text" />
+
+                    <button type="button" class="btn btn-large btn-block">Submit</button>
+                </section>
+
+                <section class="searching hidden">
+                    <i class="icon-spinner icon-spin"></i> Searching for you
+                </section>
+
+            </section>
+
+            <section class="slide hidden" data-slide="1">
 
                 <article class="question">
 
@@ -409,27 +426,7 @@
 
             </section>
 
-            <section class="slide hidden" data-slide="15">
-
-                <article class="question">
-
-                    <div class="fixHeight">
-
-                        <h3>All done, thanks!</h3>
-
-                        <button type="button" class="btn btn-large">Submit</button>
-
-                    </div>
-                    <button type="button" class="btn btn-large">Review </button>
-
-                    <div class="btn-group" data-toggle="buttons-radio">
-                          <button type="button" class="btn btn-large" data-answerFor="1" data-answer="yes"><i class="icon-ok"></i></button>
-                          <button type="button" class="btn btn-large" data-answerFor="1" data-answer="no"><i class="icon-remove"></i></button>
-                    </div>
-
-                </article>
-
-            </section>
+            <button type="button" class="donezo hidden btn btn-primary btn-large">Submit</button>
 
 
         </section>

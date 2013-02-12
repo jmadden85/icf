@@ -1,103 +1,123 @@
-function buttonPressed (buttonType, pressedButton, pressedButtonNum, direction) {
+function ICFForm () {
 
-  var that = $(pressedButton),
-        headerButtons = $('header ul li span'),
-        answerButtons = $('.btn-group button'),
-        nextNum = parseInt(pressedButtonNum) + 1,
-        prevNum = parseInt(pressedButtonNum) - 1,
-        swipeArea = $('.touchMe'),
-        questionSlides = $('.slide');
+  var answers = {
+    questionsAnswered : 0
+  },
+      submit = $('.donezo');
+
+  this.actionTaken = function (buttonType, pressedButton, pressedButtonNum, direction) {
+
+    var that = $(pressedButton),
+          headerButtons = $('header ul li span'),
+          answerButtons = $('.btn-group button'),
+          nextNum = parseInt(pressedButtonNum) + 1,
+          prevNum = parseInt(pressedButtonNum) - 1,
+          swipeArea = $('.touchMe'),
+          questionSlides = $('.slide');
 
 
-  showHide = function (type, elNumber) {
+    showHide = function (type, elNumber) {
 
 
-    var correspondingQuestion = $('[data-slide="' + pressedButtonNum + '"]'),
-          correspondingNav = $('[data-boxNum="' + pressedButtonNum + '"]');
+      var correspondingQuestion = $('[data-slide="' + pressedButtonNum + '"]'),
+            correspondingNav = $('[data-boxNum="' + pressedButtonNum + '"]');
 
-    switch ( type ) {
+      switch ( type ) {
 
-      case 'answeryes' :
+        case 'answeryes' :
 
-        correspondingNav.removeClass('btn-danger');
-        correspondingNav.addClass('btn-success');
+          correspondingNav.removeClass('btn-danger');
+          correspondingNav.addClass('btn-success');
+          break;
+
+        case 'answerno' :
+
+          correspondingNav.removeClass('btn-success');
+          correspondingNav.addClass('btn-danger');
+          break;
+
+        case 'prev' :
+
+          if ( pressedButtonNum === 1 ) {
+            return false;
+          }
+
+          correspondingQuestion = $('[data-slide="' + prevNum + '"]'),
+          correspondingNav = $('[data-boxNum="' + prevNum + '"]');
+
+          break;
+
+        default :
+          break;
+      }
+
+      if ( answers['questionsAnswered'] === 14 ) {
+        submit.removeClass('hidden');
+      } else if ( elNumber === '14' && type === 'answeryes' || elNumber === '14' && type === 'answerno' || type === 'next' && elNumber === '14' ) {
+        return false;
+      } else if ( type === 'answeryes' || type === 'answerno' || type === 'next' ) {
+        correspondingQuestion = $('[data-slide="' + nextNum + '"]'),
+        correspondingNav = $('[data-boxNum="' + nextNum + '"]');
+      }
+
+
+      headerButtons.removeClass('active');
+      questionSlides.addClass('hidden').removeClass('shown');
+      correspondingQuestion.addClass('shown').removeClass('hidden');
+      correspondingNav.addClass('active');
+
+    };
+
+
+      switch ( buttonType ) {
+
+        case 'nav' :
+          var alreadySelected = that.hasClass('active');
+
+          if ( alreadySelected ) {
+            return false;
+          }
+          showHide('nav');
+
+          break;
+
+        case 'swipe' :
+          direction === 'left' ? showHide('next') : showHide('prev');
+
         break;
 
-      case 'answerno' :
+        default :
 
-        correspondingNav.removeClass('btn-success');
-        correspondingNav.addClass('btn-danger');
-        break;
+          var clicked = that.attr('data-answer'),
+                answeredQuestion = that.attr('data-answerFor'),
+                isLast = answeredQuestion === '14';
 
-      case 'prev' :
-
-        if ( pressedButtonNum === 1 ) {
-          return false;
-        }
-
-        correspondingQuestion = $('[data-slide="' + prevNum + '"]'),
-        correspondingNav = $('[data-boxNum="' + prevNum + '"]');
-
-        break;
-
-      default :
-        break;
-    }
-
-    if ( elNumber === '14' && type === 'answeryes' || elNumber === '14' && type === 'answerno' || type === 'next' && elNumber === '14' ) {
-      return false;
-    } else if ( type === 'answeryes' || type === 'answerno' || type === 'next' ) {
-      correspondingQuestion = $('[data-slide="' + nextNum + '"]'),
-      correspondingNav = $('[data-boxNum="' + nextNum + '"]');
-    }
+          if ( answers['slide' + answeredQuestion] === undefined ) {
+            answers['questionsAnswered'] += 1;
+          }
+          answers['slide' + answeredQuestion] = that.attr('data-answer');
+          localStorage.setItem('answerObject', JSON.stringify(answers));
 
 
-    headerButtons.removeClass('active');
-    questionSlides.addClass('hidden').removeClass('shown');
-    correspondingQuestion.addClass('shown').removeClass('hidden');
-    correspondingNav.addClass('active');
+          that.parent().children().removeClass('active');
+          that.addClass('active');
+          showHide('answer' + clicked, answeredQuestion);
+
+          break;
+
+      }
+
+
 
   };
 
 
-    switch ( buttonType ) {
-
-      case 'nav' :
-        var alreadySelected = that.hasClass('active');
-
-        if ( alreadySelected ) {
-          return false;
-        }
-        showHide('nav');
-
-        break;
-
-      case 'swipe' :
-        direction === 'left' ? showHide('next') : showHide('prev');
-
-      break;
-
-      default :
-
-        var clicked = that.attr('data-answer'),
-              answeredQuestion = that.attr('data-answerFor'),
-              isLast = answeredQuestion === '14';
-
-        that.parent().children().removeClass('active');
-        that.addClass('active');
-        showHide('answer' + clicked, answeredQuestion);
-
-        break;
-
-    }
-
 };
-
-
 
 
 $(document).ready(function() {
 
+  var thisForm = new ICFForm();
 
   // $(document).bind(
   //   'touchmove',
@@ -105,42 +125,45 @@ $(document).ready(function() {
   //   e.preventDefault();
   // });
 
+  $('.enterInfo button').click(function() {
+
+    $('.logIn').addClass('hidden');
+    $('.searching').removeClass('hidden');
+
+    setTimeout(function() {
+
+      $('.searching').html('<p>We\'ve found your ICF review form for Danny Lamborghini Mursa</p>');
+
+      setTimeout(function() {
+
+        $('.searching').addClass('hidden');
+        $('.enterInfo').addClass('hidden');
+        $('header').removeClass('hidden');
+        $('.slide[data-slide=1]').removeClass('hidden')
+                                        .addClass('shown');
+      }, 3000);
+
+    }, 2000);
+
+  });
+
 
   $('header ul li span')
   .hammer({
             // options...
           })
   .bind("tap", function(ev) {
-    // console.log(ev);
     var that = $(this),
           thatNum = that.attr('data-boxNum');
-    // clickedNum = that.attr('data-boxNum'),
-    // spans = $('header ul li span'),
-    // questions= $('.slide'),
-    // thatQuestion = $('.slide[data-slide=' + clickedNum + ']');
 
     ev.preventDefault();
-    buttonPressed('nav', that, thatNum);
-
-
-    // if ( that.hasClass('active') ) {
-    //   return false;
-    // }
-
-    // spans.removeClass('active');
-    // questions.addClass('hidden')
-    // .removeClass('shown');
-    // thatQuestion.removeClass('hidden')
-    // .addClass('shown');
-    // that.addClass('active');
+    thisForm.actionTaken('nav', that, thatNum);
   });
 
   $('.btn-group button').click(function(ev) {
     ev.preventDefault();
     return false;
   });
-
-
 
   $('.btn-group button')
   .hammer({
@@ -149,40 +172,11 @@ $(document).ready(function() {
   .bind("tap", function(ev) {
     var that = $(this),
           thatNum = that.attr('data-answerFor');
-    // thisQuestionNum = that.parent().parent().parent().attr('data-slide');
-    // nextQuestionNum = parseInt(thisQuestionNum) + 1,
-    // saidYes = that.html() === '<i class="icon-ok"></i>' ? true : false;
-    // questions= $('.slide'),
-    // spans = $('header ul li span'),
-    // thisSpan = $('header ul li span[data-boxNum=' + thisQuestionNum + ']'),
-    // nextQuestion = $('.slide[data-slide=' + nextQuestionNum + ']'),
-    // nextSpan = $('header ul li span[data-boxNum=' + nextQuestionNum + ']');
+
     ev.preventDefault();
-    buttonPressed('answer', that, thatNum);
-
-    // that.parent().children().removeClass('active');
-    // that.addClass('active');
-
-    // if ( saidYes ) {
-    //   thisSpan.removeClass('btn-danger')
-    //   .addClass('btn-success');
-    // } else {
-    //   thisSpan.addClass('btn-danger')
-    //   .removeClass('btn-success');
-    // }
-
-
-    // if ( thisQuestionNum === '14') {
-    //   return false;
-    // }
-
-    // questions.addClass('hidden')
-    // .removeClass('shown');
-    // spans.removeClass('active');
-    // nextQuestion.removeClass('hidden')
-    // .addClass('shown');
-    // nextSpan.addClass('active');
-
+    // answers['slide' + thatNum] = that.attr('data-answer');
+    // localStorage.setItem('answerObject', JSON.stringify(answers));
+    thisForm.actionTaken('answer', that, thatNum);
 
   });
 
@@ -193,43 +187,11 @@ $(document).ready(function() {
   .bind("swipe", function(ev) {
     var that = $('.shown'),
           shownQuestion = parseInt(that.attr('data-slide'));
-          // nextNum = shownQuestion + 1,
-          // prevNum = shownQuestion - 1,
-          // next = $('[data-slide=' + nextNum + ']'),
-          // nextSpan = $('header ul li span[data-boxNum=' + nextNum + ']'),
-          // prev = $('[data-slide=' + prevNum  + ']'),
-          // prevSpan = $('header ul li span[data-boxNum=' + prevNum + ']'),
-          // questions= $('.slide'),
-          // spans = $('header ul li span');
 
     ev.preventDefault();
     if ( ev.direction === 'left' || ev.direction === 'right' ) {
-      buttonPressed('swipe', that, shownQuestion, ev.direction);
+      thisForm.actionTaken('swipe', that, shownQuestion, ev.direction);
     }
-
-    // if ( shownQuestion === 1 && ev.direction === 'right' ) {
-    //   return false;
-    // } else if ( shownQuestion === 14 && ev.direction === 'left' ) {
-    //   return false;
-    // }
-
-    // if ( ev.direction === 'left' ) {
-    //   questions.addClass('hidden')
-    //   .removeClass('shown');
-    //   spans.removeClass('active');
-    //   next.removeClass('hidden')
-    //   .addClass('shown');
-    //   nextSpan.addClass('active');
-    // } else if ( ev.direction === 'right' ) {
-    //   questions.addClass('hidden')
-    //   .removeClass('shown');
-    //   spans.removeClass('active');
-    //   prev.removeClass('hidden')
-    //   .addClass('shown');
-    //   prevSpan.addClass('active');
-    // } else {
-    //   return false;
-    // }
 
   });
 
