@@ -180,6 +180,10 @@ $(document).ready(function() {
 
   });
 
+  $('.donezo').click(function() {
+    alert('Thank you, your review has been submitted');
+  });
+
   $('.touchMe')
   .hammer({
             // options...
