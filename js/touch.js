@@ -183,7 +183,8 @@ $(document).ready(function() {
   });
 
   $('.donezo').click(function() {
-    alert('Thank you, your review has been submitted');
+    $('.slide').add($('header')).add($(this)).addClass('hidden');
+    $('.finished').removeClass('hidden');
   });
 
   $('.touchMe')
